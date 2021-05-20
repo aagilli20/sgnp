@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>sgnp</title>
+  <link type="image/png" href="./imgs/world.png" rel="shortcut icon">
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <LINK href="estilo.css" rel="StyleSheet" type="text/css">
+  {javascript}
+</head>
+<body>
+<div id="general">
+  <IMG id="top" src="./imgs/img_top.jpg">
+  <hr id="linea">
+  <h1 id="titulo">Sistema de Gestión de Normas y Pautas</h1>
+  <hr id="linea"><br>
+  <div id="medio">
+    <div id="divmenu">
+      <table id="menu" cellpadding="2px" cellspacing="0">
+      <tbody>
+        <tr>
+          <td id="celdamenu">
+            <a id="linkmenu" href="index.php">Inicio</a>
+          </td>
+        </tr>
+        <tr>
+          <td id="celdamenu">
+            <a id="linkmenu" href="#" onclick="xajax_form_mapa();">Mapa del Sitio</a>
+          </td>
+        </tr>
+        <tr>
+          <td id="celdamenu">
+            <a id="linkmenu" href="#" onclick="xajax_form_buscar_norma();">Buscar Normas</a>
+          </td>
+        </tr>
+        <tr>
+          <td id="celdamenu">
+            <a id="linkmenu" href="#" onclick="xajax_form_buscar_pauta();">Buscar Pautas</a>
+          </td>
+        </tr>
+        <tr>
+          <td id="celdamenu">
+            <a id="linkmenu" href="#" onclick="xajax_form_mis_datos();">Actualizar Mis Datos</a>
+          </td>
+        </tr>
+        <tr>
+          <td id="celdamenu">
+            <a id="linkmenu" href="#" onclick="xajax_form_cambiar_password();">Cambiar Contraseña</a>
+          </td>
+        </tr>
+        <tr>
+          <td id="celdamenu"><a id="linkmenu" href="informe.php">Informes</a></td>
+        </tr>
+        <tr>
+          <td id="celdamenu"><a id="linkmenu" href="admin.php">Administración</a></td>
+        </tr>
+        <tr>
+        <tr>
+          <td id="celdamenu"><a id="linkmenu" target="_blank" href="./docs/manual/manual.pdf">Ayuda</a></td>
+        </tr>
+        <tr>
+          <td id="celdamenu"><a id="linkmenu" href="logout.php">Salir</a></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div id="divcontenido">
+      <h2 id="subtitulo">Novedades</h2><br>
+      <table style="margin-top:12px; margin-left:16px;" cellpadding="4px">
+        <tbody>
+        <!-- BEGIN cargar_novedades -->
+        <tr>
+          <td><img src="./imgs/arrow32.png" id="items" align="top"></td>
+          <td><a id="link" href="#" {via_ajax}>{descrip}</a></td>
+        </tr>
+        <!-- END cargar_novedades -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="corte" style="clear:both;">
+    <br>
+    <hr id="linea">
+    <IMG id="bottom" src="./imgs/img_bottom.jpg">
+  </div>
+</div>
+</body>
+</html>

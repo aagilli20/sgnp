@@ -1,0 +1,60 @@
+<div>
+<h2 id="subtitulo">Agregar Nueva Norma</h2><br>
+<FORM action="guardar_norma.php" method="POST" enctype="multipart/form-data">
+<table cellspacing="6px" id="transparente">
+  <tbody>
+    <tr>
+      <td>Número:</td>
+      <td><INPUT type="text" name="numero" maxlength="11"></td>
+      <td>Fecha de Creación:</td>
+      <td>
+        <INPUT type="text" name="fecha" maxlength="10" class="fegray" value="dd/mm/aaaa"
+        onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}">*
+      </td>
+    </tr>
+    <tr>
+      <td>Título:</td>
+      <td><INPUT type="text" name="titulo_norma" maxlength="60">*</td>
+      <td>Descripción:</td>
+      <td><TEXTAREA name="descrip"></TEXTAREA>*</td>
+    </tr>
+    <tr>
+      <td>Nivel:</td>
+      <td>
+          <SELECT name="select_nivel" id="idnivel" style="width:80%;">
+            <!-- BEGIN cargar_nivel -->
+            <OPTION value="{id_nivel}">{nivel}</OPTION>
+            <!-- END cargar_nivel -->
+          </SELECT>
+      </td>
+      <td>Tema:</td>
+      <td>
+          <SELECT name="select_tema" id="idtema" style="width:80%;">
+            <!-- BEGIN cargar_tema -->
+            <OPTION value="{id_tema}">
+            {tema}
+            </OPTION>
+            <!-- END cargar_tema -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Adjuntar un Documento a esta Norma:</td>
+      <td><INPUT type="file" name="doc_norma" accept="application/pdf"></td>
+      <td></td>
+      <td>El Documento debe estar en formato PDF</td>
+    </tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr>
+      <td><a href="admin.php" id="link">Cancelar</a></td>
+      <td align="left">
+        <INPUT type="submit" name="guardar" value="Guardar">
+      </td>
+    </tr>
+  </tbody>
+</table>
+</FORM>
+<p id="texto" style="color:red;">{error}</p><br>
+<p id="texto">Los campos con (*) son obligatorios.</p>
+</div>

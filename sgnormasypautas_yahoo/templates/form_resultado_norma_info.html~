@@ -1,0 +1,27 @@
+<div>
+<h2 id="subtitulo">Seleccione una Norma</h2><br>
+<table width="98%" id="menu" style="margin-left:6px;">
+  <thead>
+    <tr>
+      <td width="16%" id="celdamenu">Número</th>
+      <td width="46%" id="celdamenu">Título</th>
+      <td width="18%" id="celdamenu">Nivel</th>
+      <td width="20%" id="celdamenu">Fecha</td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_normas -->
+    <tr>
+      <td width="16%" id="celdaresul">{numero}</td>
+      <td width="46%" id="celdaresul">
+        <a id="link" href="#" onclick="xajax_informe_norma('{id}');">{titulo}</a>
+      </td>
+      <td width="16%" id="celdaresul">{nivel}</td>
+      <td width="20%" id="celdaresul" align="center">{fecha}</td>
+    </tr>
+    <!-- END cargar_normas -->
+  </tbody>
+</table>
+<br><br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:4px;">Volver</a>
+</div>

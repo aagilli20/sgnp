@@ -1,0 +1,60 @@
+<div>
+<h2 id="subtitulo">Buscar Pauta</h2><br>
+<table id="transparente" cellspacing="4px" width="94%">
+  <tbody>
+    <tr>
+      <td>Tema:</td>
+      <td>
+          <SELECT name="select_tema" id="idtema" onchange="xajax_recargar_subtema(this.value);" style="width:80%;">
+            <!-- BEGIN cargar_tema -->
+            <OPTION value="{id_tema}">
+            {tema}
+            </OPTION>
+            <!-- END cargar_tema -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Pauta:</td>
+      <td id="celda_select_subtema">
+          <SELECT name="select_subtema" id="idpauta" style="width:80%;">
+            <!-- BEGIN cargar_subtema -->
+            <OPTION value="{id_pauta}">{nombre_pauta}</OPTION>
+            <!-- END cargar_subtema -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Fecha Desde:</td>
+      <td>
+      <INPUT type="text" class="fegray" id="fe_desde" value="dd/mm/aaaa" maxlength="10"
+             onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}">
+      </td>
+      <td>Fecha Hasta:</td>
+      <td>
+      <INPUT type="text" class="fegray" id="fe_hasta" value="dd/mm/aaaa" maxlength="10"
+             onfocus="if(this.value=='dd/mm/aaaa'){this.value=null; this.style.color='black';}">
+      </td>
+    </tr>
+    <tr>
+      <td>Palabra Clave:</td>
+      <td><INPUT type="text" id="keyword" maxlength="20"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a id="link" href="{via_link}">Volver</a></td>
+      <td>
+        <INPUT type="button" name="buscar" value="Buscar" onclick="xajax_resultado_pautas(
+            document.getElementById('idtema').value,
+            document.getElementById('idpauta').value,
+            document.getElementById('fe_desde').value,
+            document.getElementById('fe_hasta').value,
+            document.getElementById('keyword').value);"/>
+      </td>
+    </tr>
+</tbody>
+</table>
+</div>

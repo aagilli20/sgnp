@@ -1,0 +1,33 @@
+<div>
+<h1 id="subtitulo">Lista de Contactos</h1><br>
+
+<!-- BEGIN cargar_contactos -->
+<table id="transparente" style="margin-left:6px;">
+  <tbody>
+    <tr>
+      <td><img src="./imgs/arrow32.png" id="items"></td>
+      <td>&nbsp;<strong>{contacto}</strong></td>
+    </tr>
+  </tbody>
+</table>
+<table id="transparente" style="margin-left:16px;" cellpadding="2px">
+  <tbody>
+    <tr>
+      <td><img src="./imgs/phone32.png" id="itemsagenda"></td>
+      <td>&nbsp;{telefono}</td>
+    </tr>
+    <tr>
+      <td><img src="./imgs/ctx32.png" id="itemsagenda"></td>
+      <td>&nbsp;{centrex}</td>
+    </tr>
+    <tr>
+      <td><img src="./imgs/mail32.png" id="itemsagenda"></td>
+      <td>&nbsp;{mail}</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<!-- END cargar_contactos -->
+<br>
+<a id="link" href="#" onclick="{via_ajax}" style="margin:6px;">Volver</a>
+</div>

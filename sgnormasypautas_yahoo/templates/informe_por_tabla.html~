@@ -1,0 +1,28 @@
+<div>
+<h2 id="subtitulo">Lista de Usuarios que visitaron esta {tabla}</h2><br>
+<h2 id="subtitulo">{tabla}: {identificador}</h2><br>
+<table width="98%" id="menu">
+  <thead>
+    <tr>
+      <td width="22%" id="celdamenu">Usuario</th>
+      <td width="30%" id="celdamenu">Apellido</th>
+      <td width="30%" id="celdamenu">Nombre</th>
+      <td width="18%" id="celdamenu">Fecha de Ingreso</td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_usuarios -->
+    <tr>
+      <td width="22%" id="celdaresul">{nick}</td>
+      <td width="30%" id="celdaresul">{apellido}</td>
+      <td width="30%" id="celdaresul">{nombre}</td>
+      <td width="18%" id="celdaresul">{fecha}</td>
+    </tr>
+    <!-- END cargar_usuarios -->
+  </tbody>
+</table>
+<br><br>
+<a id="link" href="{via_link1}" {via_ajax1} style="margin:4px;">Exportar a PDF</a>
+<br><br>
+<a id="link" href="{via_link2}" {via_ajax2} style="margin:4px;">Volver</a>
+</div>

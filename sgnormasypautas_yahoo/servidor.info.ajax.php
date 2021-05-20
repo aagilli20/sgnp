@@ -1,0 +1,732 @@
+<?php
+require_once("funciones.info.ajax.php");
+require_once("template.php");
+require_once("conexion.php");
+require_once("validacion.php");
+require_once("cortar_palabra.php");
+require_once("editar_fecha.php");
+require_once("registrar_log.php");
+require_once("seguridad2.php");
+
+error_reporting(E_ALL & ~E_NOTICE);
+
+////////////////////////////////////////////////////
+// Por Norma
+////////////////////////////////////////////////////
+
+function form_buscar_norma(){
+  // carga el formulario de busqueda de normas
+  global $conexion;
+  $html="";
+  set_file("norma","form_buscar_norma.html");
+  $consulta = $conexion->Execute("SELECT * FROM Tema");
+  set_var("id_tema",-1);
+  set_var("tema","Seleccione un Tema");
+  parse("cargar_tema");
+  foreach($consulta as $tema){
+    set_var("id_tema",$tema['IdTema']);
+    set_var("tema",$tema['Tema']);
+    parse("cargar_tema");
+  }
+  unset($consulta);
+  $consulta = $conexion->Execute("SELECT IdNorma,TituloNorma FROM Norma");
+  set_var("id_norma",-1);
+  set_var("titulo_norma","Seleccione un Título");
+  parse("cargar_titulo");
+  foreach($consulta as $norma){
+    set_var("id_norma",$norma['IdNorma']);
+    set_var("titulo_norma",$norma['TituloNorma']);
+    parse("cargar_titulo");
+  }
+  unset($consulta);
+  $consulta = $conexion->Execute("SELECT * FROM Nivel");
+  set_var("id_nivel",-1);
+  set_var("nivel","Seleccione un Nivel");
+  parse("cargar_nivel");
+  foreach($consulta as $nivel){
+    set_var("id_nivel",$nivel['IdNivel']);
+    set_var("nivel",$nivel['Nivel']);
+    parse("cargar_nivel");
+  }
+  unset($consulta);
+  set_var("via_link","informe.php");
+  $html=gparse("norma");
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("divcontenido","innerHTML",$html);
+  return $respuesta;
+}
+
+function recargar_titulo($id_tema){
+  // vuelve a cargar el select de titulos según el tema seleccionado
+  global $conexion;
+  $html="";
+  set_file("combinado","select_combinado.html");
+  set_var("nombre","select_titulo");
+  set_var("id","idnorma");
+  $consulta = $conexion->Execute("SELECT IdNorma,TituloNorma FROM Norma WHERE IdTema=$id_tema");
+  set_var("valor",-1);
+  set_var("opcion","Seleccione un Título");
+  parse("cargar_combinado");
+  foreach($consulta as $norma){
+    set_var("valor",$norma['IdNorma']);
+    set_var("opcion",$norma['TituloNorma']);
+    parse("cargar_combinado");
+  }
+  unset($consulta);
+  $html=gparse("combinado");
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("celda_select_titulo","innerHTML",$html);
+  return $respuesta;
+}
+
+function resultado_normas($id_tema,$id_norma,$id_nivel,$numero,$fe_desde,$fe_hasta,$keyword){
+  // muestra el resultado de la busqueda de normas
+  global $conexion;
+  $html="";
+  $sql="";
+  $bandera = false;
+  // Validación Pre Búsqueda
+  if(!(is_numerico($numero) || $numero==null)){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('No se puede ingresar texto en el Número de la Norma')");
+    return $respuesta;
+  }
+  if(!(is_clean_text($keyword) || $keyword==null)){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('La palabra clave debe contener sólo texto')");
+    return $respuesta;
+  }
+  if(!(fecha_valida($fe_desde) || $fe_desde==null || $fe_desde=="dd/mm/aaaa")){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('La Fecha Desde ingresada no es válida')");
+    return $respuesta;
+  }
+  if(!(fecha_valida($fe_hasta) || $fe_hasta==null || $fe_hasta=="dd/mm/aaaa")){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('La Fecha Hasta ingresada no es válida')");
+    return $respuesta;
+  }
+  if(fecha_valida($fe_desde) && fecha_valida($fe_hasta)){
+    if(!is_fecha1_menor($fe_desde,$fe_hasta)){
+      $respuesta=new xajaxResponse();
+      $respuesta->script("alert('La Fecha Desde debe ser menor que la fecha Hasta')");
+      return $respuesta;
+    }
+  } 
+  // fin validacion  
+
+  if(($id_tema>0) || ($id_norma>0) || ($id_nivel>0) || ($numero>0) || ($keyword!=null) || (fecha_valida($fe_desde)) || (fecha_valida($fe_hasta))){
+    // selecciono al menos un filtro de busqueda
+    // metodo de busqueda
+    if($id_norma>0){
+      $sql = "SELECT IdNorma,NroNorma,TituloNorma,FeNorma,IdNivel FROM Norma WHERE IdNorma=$id_norma";
+    }else{
+      // compongo un where con lo que ingrese
+      $sql = "SELECT IdNorma,NroNorma,TituloNorma,FeNorma,IdNivel FROM Norma WHERE";
+      if($id_tema>0){
+        $sql = $sql." IdTema=".$id_tema;
+        $bandera = true;
+        }
+      if($id_nivel>0){
+        if($bandera){$sql = $sql." "."AND";}
+        $sql = $sql." IdNivel=".$id_nivel;
+        $bandera = true;
+      }
+      if($numero>0){
+        if($bandera){$sql = $sql." "."AND";}
+        $sql = $sql." NroNorma=".$numero;
+        $bandera = true;
+      }
+      if(fecha_valida($fe_desde)){
+        if($bandera){$sql = $sql." "."AND";}
+        $fe_desde = fecha_mysql($fe_desde);
+        $sql = $sql." FeNorma>="."'$fe_desde'";
+        $bandera = true;
+      }
+      if(fecha_valida($fe_hasta)){
+        if($bandera){$sql = $sql." "."AND";}
+        $fe_hasta = fecha_mysql($fe_hasta);
+        $sql = $sql." FeNorma<="."'$fe_hasta'";
+        $bandera = true;
+      }
+      if($keyword!=null){
+          if($bandera){$sql = $sql." "."AND";}
+          $aux = "%".$keyword."%";
+          $sql = $sql." DescripcionNorma LIKE "."'$aux'";
+      }
+    } // end if idnomra>0
+  }else{
+    $sql = "SELECT IdNorma,NroNorma,TituloNorma,FeNorma,IdNivel FROM Norma";
+  } // end if verifica si selecciono filtro
+  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  // parseo del resultado
+  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  $consulta = $conexion->Execute($sql);
+  if($consulta->RecordCount()>0){
+    if($consulta){
+      set_file("resul","form_resultado_norma_info.html");
+      foreach($consulta as $norma){
+        $id_nivel = $norma['IdNivel'];
+        $nivel = $conexion->GetRow("SELECT Nivel FROM Nivel WHERE IdNivel=$id_nivel");
+        if($norma['NroNorma']==-1){
+          set_var("numero","N/C");
+        }else{
+          set_var("numero",$norma['NroNorma']);
+        }
+        set_var("id",$norma['IdNorma']);
+        $aux = cortar_palabra($norma['TituloNorma'],32);
+        set_var("titulo",$aux);
+        set_var("nivel",$nivel['Nivel']);
+        $feaux = fecha_normal($norma['FeNorma']);
+        set_var("fecha",$feaux);
+        parse("cargar_normas");
+      } // end for
+      set_var("via_link","#");
+      set_var("via_ajax","onclick='xajax_form_buscar_norma();'");
+      $html=gparse("resul");
+      unset($consulta);
+    } else {
+      set_file("info","infoajax.html");
+      set_var("mensaje","No hubo coincidencias".$conexion->ErrorMsg());
+      set_var("via_link","#");
+      set_var("via_ajax","onclick='xajax_form_buscar_norma();'");
+      $html=gparse("info");
+    } // end if $consulta
+  }else{
+    set_file("info","infoajax.html");
+    set_var("mensaje","No existen coincidencias con la Norma Buscada");
+    set_var("via_link","#");
+    set_var("via_ajax","onclick='xajax_form_buscar_norma();'");
+    $html=gparse("info");
+  } // end if sin resultados
+  $respuesta = new xajaxResponse();
+  $respuesta->assign("divcontenido","innerHTML",$html);
+  return $respuesta;
+}
+
+function informe_norma($id_norma){
+  global $conexion;
+  $html = "";
+  // vemos si la norma fue consultada al menos 1 vez
+  $sql = "SELECT Count(*) FROM LogUsr WHERE IdTabla=3 AND IdRegistro=$id_norma";
+  $cant = $conexion->GetRow($sql);
+  if($cant['Count(*)']>0){
+      // consultamos el log
+    unset($sql);
+    $sql = "SELECT FeLog,Usuario FROM LogUsr WHERE IdTabla=3 AND IdRegistro=$id_norma";
+    $consulta = $conexion->Execute($sql);
+    set_file("informe","informe_por_tabla.html");
+    $titulo = $conexion->GetRow("SELECT TituloNorma FROM Norma WHERE IdNorma='$id_norma'");
+    set_var("tabla","Norma");
+    set_var("identificador",$titulo['TituloNorma']);
+    foreach($consulta as $log){
+      $nick = $log['Usuario'];
+      $usuario = $conexion->GetRow("SELECT Nombre,Apellido FROM Usuario WHERE Nick='$nick'");
+      set_var("nick",$nick);
+      set_var("apellido",cortar_palabra($usuario['Apellido'],26));
+      set_var("nombre",cortar_palabra($usuario['Nombre'],20));
+      set_var("fecha",fecha_normal($log['FeLog']));
+      parse("cargar_usuarios");
+    }
+    unset($consulta);
+    set_var("via_link1","generar_pdf_norma.php?pos=$id_norma");
+    set_var("via_ajax1","");
+    set_var("via_link2","informe.php");
+    set_var("via_ajax2","");
+    $html=gparse("informe");
+  }else{
+    set_file("info","infoajax.html");
+    set_var("mensaje","La Norma no fue vista por ningún Usuario");
+    set_var("via_link","informe.php");
+    set_var("via_ajax","");
+    $html=gparse("info");
+  }
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("divcontenido","innerHTML",$html);
+  return $respuesta;
+}
+
+ 
+////////////////////////////////////////////////////
+// Por Pauta
+////////////////////////////////////////////////////
+ 
+function form_buscar_pauta(){
+  // carga el formulario de busqueda de pautas
+  global $conexion;
+  $html="";
+  set_file("pauta","form_buscar_pauta.html");
+  $consulta = $conexion->Execute("SELECT * FROM Tema");
+  set_var("id_tema",-1);
+  set_var("tema","Seleccione un Tema");
+  parse("cargar_tema");
+  foreach($consulta as $tema){
+    set_var("id_tema",$tema['IdTema']);
+    set_var("tema",$tema['Tema']);
+    parse("cargar_tema");
+  }
+  unset($consulta);
+  $consulta = $conexion->Execute("SELECT IdPauta,NombrePauta FROM Pauta");
+  set_var("id_pauta",-1);
+  set_var("nombre_pauta","Seleccione una Pauta");
+  parse("cargar_subtema");
+  foreach($consulta as $pauta){
+    set_var("id_pauta",$pauta['IdPauta']);
+    set_var("nombre_pauta",$pauta['NombrePauta']);
+    parse("cargar_subtema");
+  }
+  unset($consulta);
+  set_var("via_link","informe.php");
+  $html=gparse("pauta");
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("divcontenido","innerHTML",$html);
+  return $respuesta;
+}
+
+
+function recargar_subtema($id_tema){
+  // vuelve a cargar el select de subtemas según el tema seleccionado
+  global $conexion;
+  $html="";
+  set_file("combinado","select_combinado.html");
+  set_var("nombre","select_subtema");
+  set_var("id","idpauta");
+  $consulta = $conexion->Execute("SELECT IdPauta,NombrePauta FROM Pauta WHERE IdTema=$id_tema");
+  set_var("valor",-1);
+  set_var("opcion","Seleccione una Pauta");
+  parse("cargar_combinado");
+  foreach($consulta as $pauta){
+    set_var("valor",$pauta['IdPauta']);
+    set_var("opcion",$pauta['NombrePauta']);
+    parse("cargar_combinado");
+  }
+  unset($consulta);
+  $html=gparse("combinado");
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("celda_select_subtema","innerHTML",$html);
+  return $respuesta;
+}
+
+ 
+function resultado_pautas($id_tema,$id_pauta,$fe_desde,$fe_hasta,$keyword){
+// muestra el resultado de la busqueda de pautas
+global $conexion;
+$html = "";
+$sql = "";
+$sql_item = "";
+$bandera = false;
+$bandera_item = false;
+
+// Validación Pre Búsqueda
+if(!(is_clean_text($keyword) || $keyword==null)){
+  $respuesta=new xajaxResponse();
+  $respuesta->script("alert('La palabra clave debe contener sólo texto')");
+  return $respuesta;
+}
+if(!(fecha_valida($fe_desde) || $fe_desde==null || $fe_desde=="dd/mm/aaaa")){
+  $respuesta=new xajaxResponse();
+  $respuesta->script("alert('La Fecha Desde ingresada no es válida')");
+  return $respuesta;
+}
+if(!(fecha_valida($fe_hasta) || $fe_hasta==null || $fe_hasta=="dd/mm/aaaa")){
+  $respuesta=new xajaxResponse();
+  $respuesta->script("alert('La Fecha Hasta ingresada no es válida')");
+  return $respuesta;
+}
+if(fecha_valida($fe_desde) && fecha_valida($fe_hasta)){
+  if(!is_fecha1_menor($fe_desde,$fe_hasta)){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('La Fecha Desde debe ser menor que la fecha Hasta')");
+    return $respuesta;
+  }
+} 
+// fin validacion
+
+if(($id_tema>0) || ($id_pauta>0) || ($keyword!=null) || (fecha_valida($fe_desde)) || (fecha_valida($fe_hasta))){
+  // selecciono al menos un filtro de busqueda
+  // metodo de busqueda
+  if($id_pauta>0){
+    $sql = "SELECT IdPauta,FePauta,NombrePauta,IdTema FROM Pauta WHERE IdPauta=$id_pauta";
+  }else{
+    // compongo un where con lo que ingrese
+    $sql = "SELECT IdPauta,FePauta,NombrePauta,IdTema FROM Pauta WHERE";
+    if($id_tema>0){
+      $sql = $sql." IdTema=".$id_tema;
+      $bandera = true;
+    }
+    if(fecha_valida($fe_desde)){
+      if($bandera){$sql = $sql." "."AND";}
+      $fe_desde = fecha_mysql($fe_desde);
+      $sql = $sql." FePauta>="."'$fe_desde'";
+      $bandera = true;
+    }
+    if(fecha_valida($fe_hasta)){
+      if($bandera){$sql = $sql." "."AND";}
+      $fe_hasta = fecha_mysql($fe_hasta);
+      $sql = $sql." FePauta<="."'$fe_hasta'";
+      $bandera = true;
+    }
+    if($keyword!=null){
+      if($bandera){$sql = $sql." "."AND";}
+      $aux = "%".$keyword."%";
+      $sql = $sql." NombrePauta LIKE "."'$aux'";
+      $sql_item = "SELECT IdPauta FROM ItemPauta WHERE Descripcion LIKE '$aux' OR Observacion LIKE '$aux'";
+      $bandera_item = true;
+    }
+  } // end if idpauta>0
+}else{
+  $sql = "SELECT IdPauta,FePauta,NombrePauta,IdTema FROM Pauta";
+} // end if verifica si selecciono filtro
+
+$consulta = $conexion->Execute($sql);
+$cant = $consulta->RecordCount();
+if($bandera_item==true){
+$consul_item = $conexion->Execute($sql_item);
+$cant_item = $consul_item->RecordCount();
+}else{
+  $cant_item=-10;
+}
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// parseo del resultado
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+if(($cant>0)||($cant_item>0)){
+  set_file("resul","form_resultado_pauta_info.html");
+  if($cant>0){
+    foreach($consulta as $pauta){
+      set_var("id",$pauta['IdPauta']);
+      $feaux = fecha_normal($pauta['FePauta']);
+      set_var("fecha",$feaux);
+      $aux = cortar_palabra($pauta['NombrePauta'],26);
+      set_var("nombre",$aux);
+      $id_aux = $pauta['IdTema'];
+      $tema = $conexion->GetRow("SELECT Tema FROM Tema WHERE IdTema=$id_aux");
+      unset($aux);
+      $aux = cortar_palabra($tema['Tema'],26);
+      set_var("tema",$aux);
+      parse("cargar_pautas");
+    } // end foreach consulta
+  }
+  if($cant_item>0){
+    foreach($consul_item as $item_pauta){
+      $id = $item_pauta['IdPauta'];
+      $pauta = $conexion->GetRow("SELECT IdPauta,FePauta,NombrePauta,IdTema FROM Pauta WHERE IdPauta=$id");
+      set_var("id",$pauta['IdPauta']);
+      $feaux = fecha_normal($pauta['FePauta']);
+      set_var("fecha",$feaux);
+      $aux = cortar_palabra($pauta['NombrePauta'],26);
+      set_var("nombre",$aux);
+      $id_aux = $pauta['IdTema'];
+      $tema = $conexion->GetRow("SELECT Tema FROM Tema WHERE IdTema=$id_aux");
+      unset($aux);
+      $aux = cortar_palabra($tema['Tema'],26);
+      set_var("tema",$aux);
+      parse("cargar_pautas");
+    } // end for items
+  }
+  set_var("via_link","#");
+  set_var("via_ajax","onclick='xajax_form_buscar_pauta();'");
+  $html=gparse("resul");
+  unset($consulta);
+  unset($consul_item);
+}else{
+  set_file("info","infoajax.html");
+  set_var("mensaje","No existen coincidencias con la Pauta Buscada");
+  set_var("via_link","#");
+  set_var("via_ajax","onclick='xajax_form_buscar_pauta();'");
+  $html=gparse("info");
+} // end if sin resultados
+$respuesta = new xajaxResponse();
+$respuesta->assign("divcontenido","innerHTML",$html);
+return $respuesta;
+}
+
+
+function informe_pauta($id_pauta){
+  global $conexion;
+  $html = "";
+  // vemos si la pauta fue consultada al menos 1 vez
+  $sql = "SELECT Count(*) FROM LogUsr WHERE IdTabla=4 AND IdRegistro=$id_pauta";
+  $cant = $conexion->GetRow($sql);
+  if($cant['Count(*)']>0){
+      // consultamos el log
+    unset($sql);
+    $sql = "SELECT FeLog,Usuario FROM LogUsr WHERE IdTabla=4 AND IdRegistro=$id_pauta";
+    $consulta = $conexion->Execute($sql);
+    set_file("informe","informe_por_tabla.html");
+    $titulo = $conexion->GetRow("SELECT NombrePauta FROM Pauta WHERE IdPauta='$id_pauta'");
+    set_var("tabla","Pauta");
+    set_var("identificador",cortar_palabra($titulo['NombrePauta'],70));
+    foreach($consulta as $log){
+      $nick = $log['Usuario'];
+      $usuario = $conexion->GetRow("SELECT Nombre,Apellido FROM Usuario WHERE Nick='$nick'");
+      set_var("nick",$nick);
+      set_var("apellido",cortar_palabra($usuario['Apellido'],26));
+      set_var("nombre",cortar_palabra($usuario['Nombre'],20));
+      set_var("fecha",fecha_normal($log['FeLog']));
+      parse("cargar_usuarios");
+    }
+    unset($consulta);
+    set_var("via_link1","generar_pdf_pauta.php?pos=$id_pauta");
+    set_var("via_ajax1","");
+    set_var("via_link2","informe.php");
+    set_var("via_ajax2","");
+    $html=gparse("informe");
+  }else{
+    set_file("info","infoajax.html");
+    set_var("mensaje","La Pauta no fue vista por ningún Usuario");
+    set_var("via_link","informe.php");
+    set_var("via_ajax","");
+    $html=gparse("info");
+  }
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("divcontenido","innerHTML",$html);
+  return $respuesta;
+}
+
+ 
+////////////////////////////////////////////////////
+// Por Usuario
+////////////////////////////////////////////////////
+
+
+function form_lista_usuario_activo($pagina){
+  global $conexion;
+  $html = "";
+  $cantidad = $conexion->GetRow("SELECT Count(*) FROM Usuario WHERE IdTipoUsuario IS NOT NULL");
+  $limite = 10;
+  $inicio = ($pagina-1)*10;
+  $sql = "SELECT Nick,Nombre,Apellido FROM Usuario WHERE IdTipoUsuario IS NOT NULL AND Nick!='root' ORDER BY Nombre LIMIT $inicio,$limite";
+  $consulta = $conexion->Execute($sql);
+  if($consulta){
+    set_file("listado","form_usuarios_activos_info.html");
+    foreach($consulta as $usuario){
+      set_var("nick",$usuario['Nick']);
+      set_var("nombre",cortar_palabra($usuario['Nombre'],20));
+      set_var("apellido",cortar_palabra($usuario['Apellido'],26));
+      parse("cargar_usuarios");
+    }
+    unset($consulta);
+    if($pagina==1){
+      set_var("prev","");
+      set_var("pagina_prev","");
+    }else{
+      set_var("prev","Anterior");
+      set_var("pagina_prev",($pagina-1));
+    }
+    set_var("pagina",$pagina);
+    if($cantidad['Count(*)']>($pagina*10)){
+      set_var("prox","Proxima");
+      set_var("pagina_prox",($pagina+1));
+    }else{
+      set_var("prox","");
+      set_var("pagina_prox","");
+    }
+    set_var("via_link","informe.php");
+    set_var("via_ajax","");
+    $html = gparse("listado");
+  }else{
+    set_file("info","infoajax.html");
+    set_var("mensaje","Se produjo un error al procesar su consulta, intentelo nuevamente");
+    set_var("via_link","informe.php");
+    set_var("via_ajax","");
+    $html = gparse("info");
+  }
+  $respuesta=new xajaxResponse();
+  $respuesta->assign("divcontenido","innerHTML",$html);
+  return $respuesta;
+}
+
+
+function filtrar_usuarios($username,$surname){
+  // vuelve a cargar el listado de usuarios segun los filtros ingresados
+  if(!(empty($username) && empty($surname))){
+    global $conexion;
+    $html="";
+    $bandera = false;
+    set_file("listado","listado_usuarios_info.html");
+    if(empty($surname)){
+      $aux = "%".$username."%";
+      $cantidad = $conexion->GetRow("SELECT Count(*) FROM Usuario WHERE Nick LIKE '$aux' AND Nick!='root' AND IdTipoUsuario IS NOT NULL");
+      if($cantidad['Count(*)']>0){
+        $consulta = $conexion->Execute("SELECT * FROM Usuario WHERE Nick LIKE '$aux' AND Nick!='root' AND IdTipoUsuario IS NOT NULL");
+        $bandera = true;
+      }
+    }else{
+      if(empty($username)){
+        $aux = "%".$surname."%";
+        $cantidad = $conexion->GetRow("SELECT Count(*) FROM Usuario WHERE Apellido LIKE '$aux' AND Nick!='root' AND IdTipoUsuario IS NOT NULL");
+        if($cantidad['Count(*)']>0){
+          $consulta = $conexion->Execute("SELECT * FROM Usuario WHERE Apellido LIKE '$aux' AND Nick!='root' AND IdTipoUsuario IS NOT NULL");
+          $bandera = true;
+        }
+      }else{
+        $aux1 = "%".$username."%";
+        $aux2 = "%".$surname."%";
+        $cantidad = $conexion->GetRow("SELECT Count(*) FROM Usuario WHERE Nick LIKE '$aux1' AND Nick!='root' AND Apellido LIKE '$aux2' AND IdTipoUsuario IS NOT NULL");
+        if($cantidad['Count(*)']>0){
+          $consulta = $conexion->Execute("SELECT * FROM Usuario WHERE Nick LIKE '$aux1' AND Nick!='root' AND Apellido LIKE '$aux2' AND IdTipoUsuario IS NOT NULL");
+          $bandera = true;
+        }
+      }
+    }
+    if($bandera){
+      foreach($consulta as $usuario){
+      set_var("nick",$usuario['Nick']);
+      set_var("nombre",cortar_palabra($usuario['Nombre'],20));
+      set_var("apellido",cortar_palabra($usuario['Apellido'],26));
+      parse("cargar_usuarios");
+      }
+      unset($consulta);
+      set_var("prev","");
+      set_var("pagina_prev","");
+      set_var("pagina","");
+      set_var("prox","");
+      set_var("pagina_prox","");
+      set_var("via_link","informe.php");
+      set_var("via_ajax","");
+    }else{
+      set_var("nick","");
+      set_var("nombre","No existe ningún Usuario Activo que coincida con los datos ingresados");
+      set_var("apellido","Verifique si no se encuentra Inactivo");
+      parse("cargar_usuarios");
+      set_var("prev","");
+      set_var("pagina_prev","");
+      set_var("pagina","");
+      set_var("prox","");
+      set_var("pagina_prox","");
+      set_var("via_link","informe.php");
+      set_var("via_ajax","");
+    }  
+    $html=gparse("listado");
+    $respuesta=new xajaxResponse();
+    $respuesta->assign("listado_usuarios","innerHTML",$html);
+  }else{
+    $respuesta=new xajaxResponse();
+    $respuesta->script("xajax_form_lista_usuario_activo(1);");
+  }
+  return $respuesta;
+}
+ 
+
+function informe_usuario($fe_desde,$fe_hasta,$nick){
+  global $conexion;
+  $html = "";
+  $sql = "";
+  $fe_err = false;
+  $count = "";
+  $periodo = "";
+  // validacion de fechas
+  if(!(fecha_valida($fe_desde) || $fe_desde==null || $fe_desde=='dd/mm/aaaa')){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('La Fecha Desde ingresada no es válida')");
+    return $respuesta;
+  }
+  if(!(fecha_valida($fe_hasta) || $fe_hasta==null || $fe_hasta=='dd/mm/aaaa')){
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('La Fecha Hasta ingresada no es válida')");
+    return $respuesta;
+  }
+  if(fecha_valida($fe_desde) && fecha_valida($fe_hasta)){
+    if(!is_fecha1_menor($fe_desde,$fe_hasta)){
+      $respuesta=new xajaxResponse();
+      $respuesta->script("alert('La Fecha Desde debe ser menor que la fecha Hasta')");
+      return $respuesta;
+    }
+  }
+  //
+
+  $fe_desde2 = fecha_mysql($fe_desde);
+  $fe_hasta2 = fecha_mysql($fe_hasta);
+  if($nick!=null){
+    // buscamos en el log
+    if(fecha_valida($fe_desde) && fecha_valida($fe_hasta)){
+      $periodo = "Período: desde el día ".$fe_desde." hasta el día ".$fe_hasta;
+      $sql = "SELECT FeLog,IdTabla,IdRegistro,DatoObservado FROM LogUsr WHERE Usuario='$nick' AND FeLog>'$fe_desde2' AND FeLog<'$fe_hasta2' ORDER BY IdTabla";
+      $count = "SELECT Count(*) FROM LogUsr WHERE Usuario='$nick' AND FeLog>'$fe_desde2' AND FeLog<'$fe_hasta2'";
+    }else{
+      if(fecha_valida($fe_desde)){
+        $periodo = "Período: desde el día ".$fe_desde; 
+        $sql = "SELECT FeLog,IdTabla,IdRegistro,DatoObservado FROM LogUsr WHERE Usuario='$nick' AND FeLog>'$fe_desde2' ORDER BY IdTabla";
+        $count = "SELECT Count(*) FROM LogUsr WHERE Usuario='$nick' AND FeLog>'$fe_desde2'";
+      }else{
+        if(fecha_valida($fe_hasta)){
+          $periodo = "Período: hasta el día ".$fe_hasta; 
+          $sql = "SELECT FeLog,IdTabla,IdRegistro,DatoObservado FROM LogUsr WHERE Usuario='$nick' AND FeLog<'$fe_hasta2' ORDER BY IdTabla";
+          $count = "SELECT Count(*) FROM LogUsr WHERE Usuario='$nick' AND FeLog<'$fe_hasta2'";
+        }else{
+          $sql = "SELECT FeLog,IdTabla,IdRegistro,DatoObservado FROM LogUsr WHERE Usuario='$nick' ORDER BY IdTabla";
+          $count = "SELECT Count(*) FROM LogUsr WHERE Usuario='$nick'";
+        }
+      }
+    }
+    // verificamos que existan datos coincidentes
+    $cant = $conexion->GetRow($count);
+    if($cant['Count(*)']>0){
+      // mostramos los resultados
+      $consulta = $conexion->Execute($sql);
+      if($consulta){
+        set_file("informe","informe_por_usuario.html");
+        set_var("nick",$nick);
+        set_var("periodo",$periodo);
+        foreach($consulta as $registro){
+          if($registro['IdTabla']==3){
+            set_var("tabla","Norma");
+            $id_norma = $registro['IdRegistro'];
+            $aux = $conexion->GetRow("SELECT IdTema FROM Norma WHERE IdNorma=$id_norma");
+            $id_tema = $aux['IdTema'];
+            $tema = $conexion->GetRow("SELECT Tema FROM Tema WHERE IdTema=$id_tema");
+            set_var("tema",cortar_palabra($tema['Tema'],30));
+          }
+          if($registro['IdTabla']==4){
+            set_var("tabla","Pauta");
+            $id_pauta = $registro['IdRegistro'];
+            $aux = $conexion->GetRow("SELECT IdTema FROM Pauta WHERE IdPauta=$id_pauta");
+            $id_tema = $aux['IdTema'];
+            $tema = $conexion->GetRow("SELECT Tema FROM Tema WHERE IdTema=$id_tema");
+            set_var("tema",cortar_palabra($tema['Tema'],30));
+          }
+          set_var("dato",cortar_palabra($registro['DatoObservado'],26));
+          set_var("fecha",fecha_normal($registro['FeLog']));
+          parse("cargar_registros");
+        }
+        set_var("via_link1","generar_pdf_usuario.php?pos=$nick&des=$fe_desde&has=$fe_hasta");
+        set_var("via_ajax1","");
+        set_var("via_link2","informe.php");
+        set_var("via_ajax2","");
+        $html=gparse("informe");
+        $html = gparse("informe");
+        $respuesta=new xajaxResponse();
+        $respuesta->assign("divcontenido","innerHTML",$html);
+      }else{
+        // error de conexion
+        set_file("info","infoajax.html");
+        set_var("mensaje","Se produjo un fallo en la conexión, intenetelo nuevamente");
+        set_var("via_link","informe.php");
+        set_var("via_ajax","");
+        $html=gparse("info");
+        $respuesta=new xajaxResponse();
+        $respuesta->assign("divcontenido","innerHTML",$html);
+      }
+    }else{
+      set_file("info","infoajax.html");
+      set_var("mensaje","El Usuario no visitó Normas ni Pautas en el período ingresado");
+      set_var("via_link","informe.php");
+      set_var("via_ajax","");
+      $html=gparse("info");
+      $respuesta=new xajaxResponse();
+      $respuesta->assign("divcontenido","innerHTML",$html);
+    }
+  }else{
+    $respuesta=new xajaxResponse();
+    $respuesta->script("alert('Debe Seleccionar un Usuario')");
+  }
+  return $respuesta;
+}
+
+
+////////////////////////////////////////////////////
+// Procesar la solicitud
+////////////////////////////////////////////////////
+
+$ajax->processRequest();
+?>

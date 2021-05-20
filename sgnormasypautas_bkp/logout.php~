@@ -1,0 +1,6 @@
+<?php
+require_once("seguridad.php");
+session_start();
+$_SESSION['logueado']=false;
+die();
+?>

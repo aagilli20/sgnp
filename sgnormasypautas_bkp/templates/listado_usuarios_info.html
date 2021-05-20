@@ -1,0 +1,31 @@
+<div id="listado_usuarios">
+<table id="menu" width="98%">
+  <thead>
+    <tr>
+      <td width="24%" id="celdamenu">Nickname</th>
+      <td width="34%" id="celdamenu">Nombre</th>
+      <td width="34%" id="celdamenu">Apellido</th>
+      <td width="8%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_usuarios -->
+    <tr>
+      <td width="24%" id="celdaresul">{nick}</td>
+      <td width="34%" id="celdaresul">{nombre}</td>
+      <td width="34%" id="celdaresul">{apellido}</td>
+      <td width="8%" id="celdaresul">
+        <INPUT type="radio" value="{nick}" name="usr" onclick="
+          document.getElementById('oculto').value = this.value;
+        ">
+      </td>
+    </tr>
+    <!-- END cargar_usuarios -->
+  </tbody>
+</table>
+<table id="transparente" width="98%"><TR>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina_prev}');">{prev}</a></TD>
+<TD align="center" width="34%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina}');">{pagina}</a></TD>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina_prox}');">{prox}</a></TD>
+</TR></table>
+</div>

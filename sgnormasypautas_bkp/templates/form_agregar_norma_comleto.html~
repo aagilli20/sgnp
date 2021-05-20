@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>sgnp</title>
+  <link type="image/png" href="./imgs/estrellas.png" rel="shortcut icon">
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <LINK href="estilo.css" rel="StyleSheet" type="text/css">
+  {javascript}
+</head>
+<body>
+<div id="general">
+  <div id="top"></div>
+  <hr id="linea">
+  <h1 id="titulo">Sistema de Gestión de Normas y Pautas - Administración</h1>
+  <hr id="linea"><br>
+<div id="medio">
+<h2 id="subtitulo">Agregar Nueva Norma</h2><br>
+<FORM action="guardar_norma.php" method="POST" enctype="multipart/form-data">
+<table cellspacing="6px" id="transparente">
+  <tbody>
+    <tr>
+      <td>Número:</td>
+      <td><INPUT type="text" name="numero" value="{nro_norma}"></td>
+      <td>Fecha de Creación:</td>
+      <td><INPUT type="text" name="fecha" value="{fe_norma}">*</td>
+    </tr>
+    <tr>
+      <td>Título:</td>
+      <td><INPUT type="text" name="titulo_norma" value="{titu_norma}">*</td>
+      <td>Descripción:</td>
+      <td><TEXTAREA name="descrip">{descrip_norma}</TEXTAREA>*</td>
+    </tr>
+    <tr>
+      <td>Nivel:</td>
+      <td>
+          <SELECT name="select_nivel" id="idnivel" style="width:80%;">
+            <!-- BEGIN cargar_nivel -->
+            <OPTION value="{id_nivel}" {selected1}>{nivel}</OPTION>
+            <!-- END cargar_nivel -->
+          </SELECT>
+      </td>
+      <td>Tema:</td>
+      <td>
+          <SELECT name="select_tema" id="idtema" style="width:80%;">
+            <!-- BEGIN cargar_tema -->
+            <OPTION value="{id_tema}" {selected2}>
+            {tema}
+            </OPTION>
+            <!-- END cargar_tema -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Adjuntar un Documento a esta Norma:</td>
+      <td><INPUT type="file" name="doc_norma"></td>
+      <td></td>
+      <td>El Documento debe estar en formato PDF</td>
+    </tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr>
+      <td><a href="admin.php" id="link">Cancelar</a></td>
+      <td align="left">
+        <INPUT type="submit" name="guardar" value="Guardar">
+      </td>
+    </tr>
+  </tbody>
+</table>
+</FORM>
+<p id="texto" style="color:red;">{error}</p><br>
+<p id="texto">Los campos con (*) son obligatorios.</p>
+</div>
+<div id="corte" style="clear:both;">
+    <br>
+    <hr id="linea">
+    <br>
+    <p id="pieizq">
+    Ministerio de Educación<br>
+    Dirección General de Planificación y Coordinación de Proyectos<br>
+    Mesa de Orientación y Servicios<br>
+    </p>
+    <br>
+    <p id="pieder">Diseñado por Andrés Gilli</p>
+</div>
+</div>
+</body>
+</html>

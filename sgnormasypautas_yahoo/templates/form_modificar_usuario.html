@@ -1,0 +1,79 @@
+<div>
+  <h2 id="subtitulo">Modificar datos de Usuario</h2>
+  <br><br>
+  <FORM id="form_usuario">
+  <table cellspacing="6px" id="transparente">
+    <tbody>
+      <tr>
+        <td>Nombre:</td>
+        <td><INPUT type="text" name="nombre" value="{nombre}" maxlength="50">*</td>
+        <td>Apellido:</td>
+        <td><INPUT type="text" name="apellido" value="{apellido}" maxlength="30">*</td>
+      </tr>
+      <tr>
+        <td>Tipo de Documento:</td>
+        <td>
+          <SELECT name="select_tipo_doc" style="width:60%;">
+            <!-- BEGIN cargar_tipo_doc -->
+            <OPTION value="{id_tipo_doc}" {selected}>{tipo_doc}</OPTION>
+            <!-- END cargar_tipo_doc -->
+          </SELECT>
+        </td>
+        <td>Número de Documento:</td>
+        <td><INPUT type="text" name="nrodocumento" value="{nrodoc}" maxlength="8">*</td>
+      </tr>
+      <tr>
+        <td>Sexo:</td>
+        <td>
+          <SELECT name="select_sexo" style="width:60%">
+            <!-- BEGIN cargar_sexo -->
+            <OPTION value="{id_sexo}" {selected2}>{sexo}</OPTION>
+            <!-- END cargar_sexo -->
+          </SELECT>
+        </td>
+        <td>Fecha de Nacimiento:</td>
+        <td>
+          <INPUT type="text" name="fe_nac" value="{fenac}" maxlength="10">*
+        </td>
+      </tr>
+      <tr>
+        <td>Domicilio:</td>
+        <td><INPUT type="text" name="domicilio" value="{domicilio}" maxlength="60"></td>
+        <td>E-Mail:</td>
+        <td><INPUT type="text" name="email" value="{mail}" maxlength="50">*</td>
+      </tr>
+      <tr>
+        <td>Teléfono:</td>
+        <td><INPUT type="text" name="telefono" value="{telefono}" maxlength="20"></td>
+        <td>Celular:</td>
+        <td><INPUT type="text" name="celular" value="{celular}" maxlength="20"></td>
+      </tr>
+      <tr>
+        <td>Contraseña:</td>
+        <td><INPUT type="password" name="password" value="{pass}" maxlength="20"></td>
+        <td>Tipo de Usuario:</td>
+        <td>
+          <SELECT name="select_tipo_usuario" style="width:80%">
+            <!-- BEGIN cargar_tipo_usuario -->
+            <OPTION value="{id_tipo_usuario}" {selected3}>{tipo_user}</OPTION>
+            <!-- END cargar_tipo_usuario -->
+          </SELECT>
+        </td>
+      </tr>
+      <tr><TD></TD><TD></TD></tr>
+      <tr><TD></TD><TD></TD></tr>
+      <tr>
+        <td><a href="admin.php" id="link">Volver</a></td>
+        <td align="right">
+          <INPUT type="button" name="modificar" value="Modificar" 
+          onclick="xajax_modificar_usuario(xajax.getFormValues('form_usuario'));">
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  <INPUT type="hidden" name="nick" value="{nick}">
+  </FORM>
+  <p id="texto" style="color:red;">{error}</p><br>
+  <p id="texto">Los campos con (*) son obligatorios. Además debe ingresar un teléfono o celular.</p>
+  <br>
+</div>

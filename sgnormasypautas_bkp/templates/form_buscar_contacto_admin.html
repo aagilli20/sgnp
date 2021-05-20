@@ -1,0 +1,39 @@
+<div>
+<h2 id="subtitulo">Buscar Contactos</h2><br>
+<span style="margin-left:6px;"><strong>Nombre del Contacto: </strong></span>
+<INPUT type="text" maxlength="120" style="width:40%;" id="word"
+ onkeypress="if(event.keyCode==13){xajax_filtrar_contactos(document.getElementById('word').value);}">
+<INPUT type="button" value="Buscar" onclick="xajax_filtrar_contactos(document.getElementById('word').value);">
+<br><br>
+<h2 id="subtitulo">Listado de Contactos</h2><br>
+<div id="listado_contactos">
+<table id="menu" width="90%">
+  <thead>
+    <tr>
+      <td width="80%" id="celdamenu">Contacto</td>
+      <td width="10%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_contactos -->
+    <tr>
+      <td width="80%" id="celdaresul">{contacto}</td>
+      <td width="10%" id="celdaresul">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Eliminar" 
+          onclick="if(confirm('¿Seguro desea eliminar el Contacto?')){xajax_eliminar_contacto('{idcontacto}');}"> 
+        <img src="./imgs/edit32.png" id="itemsagenda" title="Modificar" 
+          onclick="xajax_form_modificar_contacto('{idcontacto}');">
+      </td>
+    </tr>
+    <!-- END cargar_contactos -->
+  </tbody>
+</table>
+<table id="transparente" width="90%"><TR>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_buscar_contacto('{pagina_prev}');">{prev}</a></TD>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_buscar_contacto('{pagina}');">{pagina}</a></TD>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_buscar_contacto('{pagina_prox}');">{prox}</a></TD>
+</TR></table>
+</div>
+<br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:6px;">Volver</a>
+</div>

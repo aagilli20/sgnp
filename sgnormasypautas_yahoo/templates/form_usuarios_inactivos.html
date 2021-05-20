@@ -1,0 +1,28 @@
+<div>
+<h2 id="subtitulo">Usuarios Inactivos</h2><br>
+<table width="98%" id="menu">
+  <thead>
+    <tr>
+      <td width="20%" id="celdamenu">Nickname</th>
+      <td width="34%" id="celdamenu">Nombre</th>
+      <td width="34%" id="celdamenu">Apellido</th>
+      <td width="12%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_usuarios -->
+    <tr>
+      <td width="20%" id="celdaresul">{nick}</td>
+      <td width="34%" id="celdaresul">{nombre}</td>
+      <td width="34%" id="celdaresul">{apellido}</td>
+      <td width="12%" id="celdaresul">
+        <img src="./imgs/accept32.png" id="itemsagenda" title="Activar" onclick="if(confirm('Para activar un usuario seleccione el tipo de usuario correspondiente. Antes de activarlo verique que los datos ingresados por el mismo sean correctos!')){xajax_form_modificar_usuario('{nick}');}">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Eliminar" onclick="if(confirm('Seguro desea Eliminar el Usuario?')){xajax_eliminar_usuario_inactivo('{nick}');}">
+        </td>
+    </tr>
+    <!-- END cargar_usuarios -->
+  </tbody>
+</table>
+<br><br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:6px;">Volver</a>
+</div>

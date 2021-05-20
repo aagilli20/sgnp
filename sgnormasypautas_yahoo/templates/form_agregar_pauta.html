@@ -1,0 +1,46 @@
+<div>
+<h2 id="subtitulo">Agregar Nueva Pauta</h2><br>
+<FORM action="guardar_pauta.php" method="POST" enctype="multipart/form-data">
+<table cellspacing="6px" id="transparente">
+  <tbody>
+    <tr>
+      <td>Nombre:</td>
+      <td><INPUT type="text" name="nombre_pauta" maxlength="100">*</td>
+      <td>Fecha de Creación:</td>
+      <td>
+        <INPUT type="text" name="fecha" class="fegray" value="dd/mm/aaaa" maxlength="10"
+        onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}"
+        >*</td>
+    </tr>
+    <tr>
+      <td>Tema:</td>
+      <td>
+          <SELECT name="select_tema" id="idtema" style="width:80%;">
+            <!-- BEGIN cargar_tema -->
+            <OPTION value="{id_tema}">
+            {tema}
+            </OPTION>
+            <!-- END cargar_tema -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Adjuntar un Documento a esta Pauta:</td>
+      <td><INPUT type="file" name="doc_pauta" accept="application/pdf"></td>
+      <td></td>
+      <td>El Documento debe estar en formato PDF</td>
+    </tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr>
+      <td><a href="admin.php" id="link">Cancelar</a></td>
+      <td align="left">
+        <INPUT type="submit" name="guardar" value="Guardar">
+      </td>
+    </tr>
+  </tbody>
+</table>
+</FORM>
+<p id="texto" style="color:red;">{error}</p><br>
+<p id="texto">Los campos con (*) son obligatorios.</p>
+</div>

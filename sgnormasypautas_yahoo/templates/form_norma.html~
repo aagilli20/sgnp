@@ -1,0 +1,24 @@
+<div id="medio">
+<h2 id="subtitulo"><u>Título de la Norma:</u> {titulo}</h2><br>
+<h2 id="subtitulo"><u>Número:</u> {numero}</h2><br>
+<h2 id="subtitulo"><u>Tema:</u> {tema}</h2><br>
+<h2 id="subtitulo"><u>Nivel:</u> {nivel}</h2><br>
+<h2 id="subtitulo"><u>Fecha:</u> {fecha}</h2><br>
+<h2 id="subtitulo"><u>Descripción:</u></h2><br>
+<span style="padding-left:6px;">{descrip}</span>
+<br><br>
+<a id="link" target="_blank" href="{url_doc}" style="margin:4px;">
+  {documento_norma}
+</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="link" onclick="xajax_form_enviar_email('{id_norma}','3','');">
+{enviar_mail}
+</a>
+<br><br>
+<a id="link" href="#" onclick="xajax_norma_pauta('{id_norma}')" style="margin:6px;">
+  Ver las Pautas asociadas a esta Norma
+</a><br><br>
+<a id="link" href="#" onclick="{contacto}" style="margin:6px;">
+  Ver autoridad competente
+</a><br><br>
+<a id="link" href="index.php" style="margin:6px;">Volver</a><br>
+</div>

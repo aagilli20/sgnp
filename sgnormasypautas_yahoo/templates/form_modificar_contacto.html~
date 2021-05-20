@@ -1,0 +1,39 @@
+<div>
+<h2 id="subtitulo">Modificar Contacto</h2><br>
+<table cellspacing="6px" id="transparente">
+  <tbody>
+    <tr>
+      <td>Nombre del Contacto:</td>
+      <td><INPUT type="text" id="nombre" maxlength="100">{nombre}</td>
+    </tr>
+    <tr>
+      <td>E-Mail:</td>
+      <td><INPUT type="text" id="email" maxlength="50">{email}</td>
+    </tr>
+    <tr>
+      <td>Telefono:</td>
+      <td><INPUT type="text" id="telefono" maxlength="40">{tel}</td>
+    </tr>
+    <tr>
+      <td>Centrex:</td>
+      <td><INPUT type="text" id="centrex" maxlength="40">{ctx}</td>
+    </tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr>
+      <td><a href="#" id="link" onclick="xajax_form_buscar_contacto(1);">Cancelar</a></td>
+      <td align="left">
+        <INPUT type="submit" name="modificar" value="Modificar" onclick="xajax_modificar_contacto(
+          {idcontacto},
+          document.getElementById('nombre').value,
+          document.getElementById('email').value,
+          document.getElementById('telefono').value,
+          document.getElementById('centrex').value
+        );">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p id="texto" style="color:red;">{error}</p><br>
+<p id="texto">Los campos con (*) son obligatorios.</p>
+</div>

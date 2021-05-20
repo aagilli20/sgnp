@@ -1,0 +1,144 @@
+<?php
+require_once("template.php");
+require_once("editar_fecha.php");
+require_once("validacion.php");
+require_once("conexion.php");
+require_once("seguridad2.php");
+require_once("registrar_log.php");
+require_once("funciones.admin.ajax.php");
+
+// variables globales
+$fecha = $_REQUEST['fecha'];
+$nombre_pauta = $_REQUEST['nombre_pauta'];
+$idtema = $_REQUEST['select_tema'];
+$urldoc = "";
+$mensaje = "";
+$bandera = true; // si hay error cambia a false
+$id_ant = "";
+
+// se verifica que haya ingresado desde guardar
+if(isset($_REQUEST['guardar'])){
+  if(($nombre_pauta!=null)&&($fecha!=null)){
+    //me fijo que haya seleccionado tema
+    if($idtema!=-1){
+      // valido la fecha
+      if(fecha_valida($fecha)){
+        // se valida el nombre de la pauta
+        if(is_alphanumeric($nombre_pauta,1,100)){
+          // guardar pauta
+          // genero un id para la pauta
+          // verifico que no se repita nombre y tema
+          $cant = $conexion->GetRow("SELECT Count(*) FROM Pauta WHERE NombrePauta='$nombre_pauta' AND IdTema='$idtema'");
+          if($cant['Count(*)']==0){
+            $id = $conexion->GenID("SeqPauta");
+            $id_ant = $id-1;
+            // si tiene documento debo subirlo
+            if(is_uploaded_file($_FILES['doc_pauta']['tmp_name'])) {
+              $extension=explode(".",$_FILES['doc_pauta']['name'],2);
+              if(!strcmp($extension[1],"pdf")){
+                $urldoc="./docs/pautas/pauta".$id.".".$extension[1];
+                if(!copy($_FILES['doc_pauta']['tmp_name'],$urldoc)){
+                  // no se pudo guardar el documento
+                  $bandera = false;
+                  $conexion->Execute("UPDATE SeqPauta SET id=$id_ant WHERE id=$id");
+                  $mensaje = "Error al guardar el Documento, vuelva a intentarlo";
+                }
+              }else{
+                // el doc no es un archivo pdf
+                $bandera = false;
+                $conexion->Execute("UPDATE SeqPauta SET id=$id_ant WHERE id=$id");
+                $mensaje = "El Documento debe estar en formato PDF";
+              }
+            }else{
+              $urldoc = null;
+            }
+          }else{
+            // nobre y tema duplicado
+            $bandera = false;
+            $mensaje = "Ya existe una Pauta con el mismo Nombre y Tema";
+          }
+        }else{
+          // nobre de la pauta no valido
+          $bandera = false;
+          $mensaje = "El Nombre de la Pauta solo puede contener datos alfanumericos. Además debe tener un máximo de 100 caracteres";
+        }
+      }else{
+        // fecha no valida
+        $bandera = false;
+        $mensaje = "Debe ingresar una fecha válida, menor a la actual y con formato dd/mm/aaaa";
+      }
+    }else{
+      // no selecciono tema
+      $bandera = false;
+      $mensaje = "Debe seleccionar un Tema";
+    }
+  }else{
+    // no completo nombre o fecha
+    $bandera = false;
+    $mensaje = "Debe Completar los campos con (*)";
+  }
+}else{
+  // no presiono el botón guardar
+  $bandera = false;
+  $mensaje = "Error al procesar la información, intentelo nuevamente";
+}
+
+$ok = true;
+if($bandera){
+  // guardamos la norma
+  $owner = $_SESSION["usuario"];
+  $fecha_new = fecha_mysql($fecha);
+  if($urldoc!=null){
+    $sql = "INSERT INTO Pauta VALUES ($id,'$fecha_new','$nombre_pauta','$urldoc','$idtema','$owner')";
+  }else{
+    $sql = "INSERT INTO Pauta VALUES ($id,'$fecha_new','$nombre_pauta',null,'$idtema','$owner')";
+  }
+  $ok = $conexion->Execute($sql);
+  if($ok){
+    registrar_log_abm(1,4,$id,$nombre_pauta);
+    set_file("salida","info_opcion.html");
+    set_var("javascript",$ajax->getJavascript("./"));
+    set_var("mensaje","La Pauta se cargo Correctamente");
+    set_var("opcion", "Completar Información sobre la Nueva Pauta");
+    set_var("via_link2","#");
+    set_var("via_ajax2","onclick='xajax_form_pauta($id);'");
+    set_var("via_link","admin.php");
+    set_var("via_ajax","");
+  }else{
+    $conexion->Execute("UPDATE SeqPauta SET id=$id_ant WHERE id=$id");
+    $mensaje = "Error al procesar la información, intentelo nuevamente".$conexion->ErrorMsg();
+  }
+}
+if((!$bandera)||(!$ok)){
+  // si no se pudo guardar o hubo un error volvemos al form de alta pauta
+  set_file("salida","form_agregar_pauta_completo.html");
+  set_var("javascript",$ajax->getJavascript("./"));
+  set_var("error",$mensaje);
+  $consulta = $conexion->Execute("SELECT * FROM Tema");  
+  if($idtema==-1){
+    set_var("id_tema",-1);
+    set_var("tema","Seleccione un Tema");
+    set_var("selected","selected=selected");
+    parse("cargar_tema");
+    foreach($consulta as $tema){
+      set_var("id_tema",$tema['IdTema']);
+      set_var("tema",$tema['Tema']);
+      set_var("selected","");
+      parse("cargar_tema");
+    }
+  }else{
+    foreach($consulta as $tema){
+      set_var("id_tema",$tema['IdTema']);
+      set_var("tema",$tema['Tema']);
+      if($tema['IdTema']==$idtema){set_var("selected","selected=selected");}
+      else{set_var("selected","");}
+      parse("cargar_tema");
+    }
+  }
+  unset($consulta);
+  set_var("nom_pauta",$nombre_pauta);
+  set_var("fe_pauta",$fecha);
+}
+
+pparse("salida");
+?>

@@ -1,0 +1,42 @@
+<div>
+<h2 id="subtitulo">Novedades Actuales</h2><br>
+<table width="98%" id="menu" style="margin-left:6px;">
+  <thead>
+    <tr>
+      <td width="10%" id="celdamenu">Número</td>
+      <td width="50%" id="celdamenu">Novedad</td>
+      <td width="6%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_novedades -->
+    <tr>
+      <td width="10%" id="celdaresul" align="center">{idnovedad}</td>
+      <td width="50%" id="celdaresul">&nbsp;{novedad}</td>
+      <td width="6%" id="celdaresul" align="center">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Quitar" onclick="
+          if(confirm('¿Seguro desea quitar de novedades el registro seleccionado?')){xajax_reiniciar_novedad_pauta('{idnovedad}','{idpauta}');}">
+      </td>
+    </tr>
+    <!-- END cargar_novedades -->
+  </tbody>
+</table>
+<br><br>
+<h2 id="subtitulo">Incluir Pauta en la Novedad Número:</h2><br>
+<table id="transparente" width="40%">
+    <td width="40%">
+          <SELECT name="select_novedad" id="idnovedad" style="width:80%;">
+            <!-- BEGIN cargar_select_novedades -->
+            <OPTION value="{id_novedad}">{id_novedad}</OPTION>
+            <!-- END cargar_select_novedades -->
+          </SELECT>
+    </td>
+    <td width="20%">
+      <INPUT type="button" name="asociar" value="Asociar"
+        onclick="xajax_asociar_novedad_pauta({idpauta},document.getElementById('idnovedad').value);">
+    </td>
+  </tr>
+</table>
+<br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:4px;">Volver</a>
+</div>

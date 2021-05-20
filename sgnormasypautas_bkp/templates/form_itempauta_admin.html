@@ -1,0 +1,52 @@
+<div id="medio">
+<h2 id="subtitulo">Items asociados a la Pauta</h2><br>
+<span style="margin:6px;"><strong>Seleccione el Nivel:</strong></span>
+<SELECT name="select_nivel" id="idnivel" style="width:40%;" onchange="xajax_recargar_items('{idpauta}',this.value);">
+  <!-- BEGIN cargar_nivel -->
+    <OPTION value="{id_nivel}">{nivel}</OPTION>
+  <!-- END cargar_nivel -->
+</SELECT>
+<INPUT type="submit" name="modificar_item" value="Modificar Item" onclick="
+  xajax_modificar_item_pauta({idpauta},
+                             document.getElementById('idnivel').value,
+                             document.getElementById('areatexto').value,
+                             document.getElementById('obs').value);">
+<INPUT type="button" name="eliminar_item" value="Eliminar Item" onclick="
+  if(confirm('¿Seguro desea eliminar este Item?'))
+    {xajax_eliminar_item_pauta('{idpauta}',document.getElementById('idnivel').value);}">
+<h2></h2>
+<div id="datos_item">
+  <h2 id="subtitulo">Descripción:</h2><br>
+  <TEXTAREA id="areatexto">{descrip}</TEXTAREA> 
+  <br><br>
+  <span style="margin:6px;">
+    <strong>Observaciones: </strong>
+  </span>
+  <INPUT type="text" id="obs" maxlength="300" style="width:60%;" value="{obs}">
+  <br><br>
+</div>
+<div style="Border-width:2px;Border-color:rgb(220,183,115);Border-style:solid;">
+  <h2 id="subtitulo">Agregar Item a la Pauta</h2><br>
+  <span style="margin:6px;"><strong>Seleccione el Nivel:</strong></span>
+  <SELECT name="select_nivel_add" id="idniveladd" style="width:40%;">
+    <!-- BEGIN cargar_nivel_add -->
+      <OPTION value="{id_nivel_add}">{nivel_add}</OPTION>
+    <!-- END cargar_nivel_add -->
+  </SELECT>
+  &nbsp;&nbsp; <span style="color:red;">Solo puede existir un item por Nivel.</span><br><br>
+  <h2 id="subtitulo">Descripción:</h2><br>
+  <TEXTAREA id="areatexto_add"></TEXTAREA> 
+  <br><br>
+  <span style="margin:6px;"><strong>Observaciones: </strong></span>
+  <INPUT type="text" id="obs_add" maxlength="300" style="width:60%;">
+  <br><br>
+  <INPUT type="button" value="Agregar Item" name="agregar_item" style="margin:6px;" onclick="
+    xajax_agregar_item_pauta('{idpauta}',
+                             document.getElementById('idniveladd').value,
+                             document.getElementById('areatexto_add').value,
+                             document.getElementById('obs_add').value);">
+<br>
+</div>
+<br>
+<a id="link" href="#" onclick="xajax_form_pauta('{idpauta}');" style="margin:6px;">Volver</a><br>
+</div>

@@ -1,0 +1,31 @@
+<div>
+<table width="98%" id="menu">
+  <thead>
+    <tr>
+      <td width="20%" id="celdamenu">Nickname</th>
+      <td width="30%" id="celdamenu">Nombre</th>
+      <td width="30%" id="celdamenu">Apellido</th>
+      <td width="20%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_usuarios -->
+    <tr>
+      <td width="20%" id="celdaresul">{nick}</td>
+      <td width="30%" id="celdaresul">{nombre}</td>
+      <td width="30%" id="celdaresul">{apellido}</td>
+      <td width="20%" id="celdaresul">
+        <img src="./imgs/edit32.png" id="itemsagenda" title="Modificar" onclick="xajax_form_modificar_usuario('{nick}');">
+        <img src="./imgs/remove32.png" id="itemsagenda" title="Desactivar" onclick="if(confirm('Seguro desea Desactivar el Usuario?')){xajax_desactivar_usuario('{nick}');}">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Eliminar" onclick="if(confirm('Seguro desea Eliminar el Usuario?')){xajax_eliminar_usuario('{nick}');}">
+      </td>
+    </tr>
+    <!-- END cargar_usuarios -->
+  </tbody>
+</table>
+<table id="transparente" width="70%"><TR>
+<TD align="center" width="23%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina_prev}');">{prev}</a></TD>
+<TD align="center" width="23%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina}');">{pagina}</a></TD>
+<TD align="center" width="23%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina_prox}');">{prox}</a></TD>
+</TR></table>
+</div>

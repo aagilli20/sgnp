@@ -1,0 +1,60 @@
+<div>
+<h2 id="subtitulo">Gestión de Temas</h2><br>
+<table style="margin-left:6px;" cellpadding="3px">
+  <TR>
+    <TD><strong>Agregar un Tema:</strong></TD>
+    <TD>
+    <INPUT type="text" maxlength="200" style="width:90%;" id="nuevo_tema"
+    onkeypress="if(event.keyCode==13){xajax_agregar_tema(document.getElementById('nuevo_tema').value);}">
+    </TD>
+    <TD>
+    <INPUT type="button" value="Agregar" onclick="xajax_agregar_tema(document.getElementById('nuevo_tema').value);">
+    </TD>
+  </TR>
+  <TR>
+    <TD>{comentario}{nombre_tema}</TD>
+  </TR>
+  <TR>
+    <TD><strong>Listado de Temas</strong></TD>
+  </TR>
+  <TR>
+    <TD><strong>Tema:</strong></TD>
+    <TD>
+    <INPUT type="text" maxlength="30" style="width:90%;" id="word"
+    onkeypress="if(event.keyCode==13){xajax_filtrar_temas(document.getElementById('word').value);}">
+    </TD>
+    <TD>
+    <INPUT type="button" value="Buscar" onclick="xajax_filtrar_temas(document.getElementById('word').value);">
+    </TD>
+  </TR>
+</table>
+<br>
+<div id="listado_temas">
+<table id="menu" width="90%">
+  <thead>
+    <tr>
+      <td width="80%" id="celdamenu">Tema</td>
+      <td width="10%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_temas -->
+    <tr>
+      <td width="80%" id="celdaresul" style="">{tema}</td>
+      <td width="10%" id="celdaresul" align="center">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Eliminar" onclick="
+          if(confirm('Recuerde que para eliminar un Tema, este no debe tener Normas ni Pautas asociadas ¿Seguro desea eliminar el Tema?')){xajax_eliminar_tema('{idtema}');}">
+      </td>
+    </tr>
+    <!-- END cargar_temas -->
+  </tbody>
+</table>
+<table id="transparente" width="90%"><TR>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_temas('{pagina_prev}','');">{prev}</a></TD>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_temas('{pagina}','');">{pagina}</a></TD>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_temas('{pagina_prox}','');">{prox}</a></TD>
+</TR></table>
+</div>
+<br><br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:6px;">Volver</a>
+</div>

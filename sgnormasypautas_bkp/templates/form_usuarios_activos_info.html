@@ -1,0 +1,77 @@
+<div>
+<h2 id="subtitulo">Usuarios</h2><br>
+<INPUT type="hidden" id="oculto" value="">
+<table id="transparente" width="98%">
+<TR>
+<TD>Nombre de Usuario:</TD>
+<TD><input type="text" id="username" maxlength="20" onkeypress="if(event.keyCode==13)
+{xajax_filtrar_usuarios(document.getElementById('username').value,document.getElementById('surname').value);}">
+</TD>
+<TD>Apellido:</TD>
+<TD><input type="text" id="surname" maxlength="30" onkeypress="if(event.keyCode==13)
+{xajax_filtrar_usuarios(document.getElementById('username').value,document.getElementById('surname').value);}">
+</TD>
+<TD><input type="button" id="filtrar" value="Buscar" onclick="xajax_filtrar_usuarios(document.getElementById('username').value,document.getElementById('surname').value);">
+</TD>
+</TR>
+</table>
+<div id="listado_usuarios">
+<table id="menu" width="98%">
+  <thead>
+    <tr>
+      <td width="24%" id="celdamenu">Nickname</th>
+      <td width="34%" id="celdamenu">Nombre</th>
+      <td width="34%" id="celdamenu">Apellido</th>
+      <td width="8%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_usuarios -->
+    <tr>
+      <td width="24%" id="celdaresul">{nick}</td>
+      <td width="34%" id="celdaresul">{nombre}</td>
+      <td width="34%" id="celdaresul">{apellido}</td>
+      <td width="8%" id="celdaresul">
+        <INPUT type="radio" value="{nick}" name="usr" onclick="
+          document.getElementById('oculto').value = this.value;
+        ">
+      </td>
+    </tr>
+    <!-- END cargar_usuarios -->
+  </tbody>
+</table>
+<table id="transparente" width="98%"><TR>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina_prev}');">{prev}</a></TD>
+<TD align="center" width="34%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina}');">{pagina}</a></TD>
+<TD align="center" width="33%"><a id="link" href="#" onclick="xajax_form_lista_usuario_activo('{pagina_prox}');">{prox}</a></TD>
+</TR></table>
+</div>
+<br>
+<table id="transparente" width="98%">
+<TR>
+<TD>Fecha desde:</TD>
+<TD><input type="text" id="fe_desde" maxlength="10" class="fegray" value="dd/mm/aaaa"
+onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}"
+ onkeypress="if(event.keyCode==13)
+{xajax_informe_usuario(document.getElementById('fe_desde').value,
+                       document.getElementById('fe_hasta').value,
+                       document.getElementById('oculto').value);}">
+</TD>
+<TD>Fecha Hasta:</TD>
+<TD><input type="text" id="fe_hasta" maxlength="10" class="fegray" value="dd/mm/aaaa"
+onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}"
+onkeypress="if(event.keyCode==13)
+{xajax_informe_usuario(document.getElementById('fe_desde').value,
+                       document.getElementById('fe_hasta').value,
+                       document.getElementById('oculto').value);}">
+</TD>
+<TD>
+<input type="button" id="geninf" value="Generar Informe" onclick=
+"xajax_informe_usuario(document.getElementById('fe_desde').value,                                                                             document.getElementById('fe_hasta').value,
+                       document.getElementById('oculto').value);">
+</TD>
+</TR>
+</table>
+<br><br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:6px;">Volver</a>
+</div>

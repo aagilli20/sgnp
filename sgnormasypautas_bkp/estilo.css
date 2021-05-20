@@ -1,0 +1,197 @@
+body
+{
+    Font-family : sans-serif;
+    Font-style : normal;
+    Font-size : small;
+    Color : black;
+    Font-weight : normal;
+    Background-repeat : repeat;
+    Background-attachment : scroll;
+    Margin-top : 0px;
+    Margin-right : 0px;
+    Margin-bottom : 0px;
+    Margin-left : 0px;
+    Width : 98%;
+    Height : 98%;
+    Background-color : rgb(255 , 230 , 128);
+    Background-image : url("./imgs/fondos/textura1.jpg");
+    overflow-y : scroll;
+}
+div#general
+{
+    Background-color : rgb(255 , 242 , 191);
+    Background-position : top center;
+    Margin-top : auto;
+    Margin-right : auto;
+    Margin-bottom : auto;
+    Margin-left : auto;
+    Width : 900px;
+    Height : auto;
+    Border-color : rgb(102 , 102 , 102);
+    Border-style : ridge;
+    Border-width : 5px;
+}
+img#top
+{
+    Margin-top : auto;
+    Margin-right : auto;
+    Margin-bottom : auto;
+    Margin-left : auto;
+    Width : 900px;
+    Height : 120px;
+}
+img#bottom
+{
+    Margin-top : auto;
+    Margin-right : auto;
+    Margin-bottom : auto;
+    Margin-left : auto;
+    Width : 900px;
+    Height : 80px;
+}
+div#divmenu
+{
+    Width : 170px;
+    Float : left;
+    Margin-left : 4px;
+}
+div#divcontenido
+{
+    Width : 710px;
+    Float : right;
+    Border-width : 3px;
+    Height : auto;
+    Padding-bottom : 6px;
+    Margin-right : 4px;
+    Border-color : rgb(102 , 102 , 102);
+    Border-style : solid;
+}
+h1#titulo
+{
+    Font-weight : bold;
+    Font-size : medium;
+    Text-align : center;
+    Margin-top : 8px;
+    Margin-right : auto;
+    Margin-bottom : 8px;
+    Margin-left : auto;
+    Color : black;
+}
+h2#subtitulo
+{
+    Font-weight : bold;
+    Font-size : small;
+    Text-align : left;
+    Margin-right : auto;
+    Margin-top : 6px;
+    Margin-bottom : auto;
+    Margin-left : 6px;
+}
+p#texto
+{
+    Text-align : left;
+    Margin-top : 0px;
+    Margin-right : auto;
+    Margin-left : 6px;
+    Margin-bottom : auto;
+}
+hr#linea
+{
+    Background-color : rgb(102 , 102 , 102);
+    Text-align : center;
+    Margin-top : 0px;
+    Margin-right : auto;
+    Margin-bottom : auto;
+    Margin-left : auto;
+    Width : 900px;
+    Height : 3px;
+}
+table#transparente
+{
+    Margin-top : 0px;
+    Margin-right : 0px;
+    Margin-bottom : 0px;
+    Margin-left : 0px;
+    Border-width : 2px;
+    Border-color : rgb(255 , 242 , 191);
+    Border-style : solid;
+}
+a#link
+{
+    Color : rgb(4 , 66 , 127);
+    Margin-top : auto;
+    Margin-right : auto;
+    Margin-bottom : auto;
+    Margin-left : 0px;
+    Text-decoration : underline;
+    Text-align : left;
+}
+a#link:hover
+{
+    Color : rgb(127 , 16 , 4);
+}
+table#menu
+{
+    Margin-top : auto;
+    Margin-right : auto;
+    Margin-bottom : auto;
+    Margin-left : auto;
+    Border-width : 3px;
+    Border-color : rgb(102 , 102 , 102);
+    Border-style : solid;
+}
+td#celdamenu
+{
+    Font-weight : bolder;
+    Background-color : rgb(204 , 255 , 153);
+    Width : 154px;
+    Height : 30px;
+    Text-align : center;
+    Border-width : 2px;
+    Border-color : rgb(220 , 183 , 115);
+    Border-style : solid;
+    Background-image : url("./imgs/boton_generico.png");
+}
+td#celdaresul
+{
+    Border-width : 2px;
+    Border-color : rgb(220 , 183 , 115);
+    Border-style : solid;
+    Text-Align : center;
+}
+a#linkmenu
+{
+    Color : rgb(4 , 66 , 127);
+    Font-weight : bolder;
+    Text-decoration : none;
+}
+a#linkmenu:hover
+{
+    Color : rgb(127 , 16 , 4);
+}
+.fegray
+{
+    Color : gray;
+}
+#areatexto
+{
+    Margin : 6px;
+    Width : 680px;
+    Height : 80px;
+}
+#areatexto_add
+{
+    Margin : 6px;
+    Width : 680px;
+    Height : 80px;
+}
+img#items
+{
+    Width : 20px;
+    Height : 20px;
+}
+img#itemsagenda
+{
+    Width : 26px;
+    Height : 26px;
+}

@@ -1,0 +1,40 @@
+<div>
+<h2 id="subtitulo">Agregar Nuevo Contacto</h2><br>
+<table cellspacing="6px" id="transparente">
+  <tbody>
+    <tr>
+      <td>Nombre del Contacto:</td>
+      <td><INPUT type="text" id="nombre" maxlength="100">*</td>
+    </tr>
+    <tr>
+      <td>E-Mail:</td>
+      <td><INPUT type="text" id="email" maxlength="50"></td>
+    </tr>
+    <tr>
+      <td>Telefono:</td>
+      <td><INPUT type="text" id="telefono" maxlength="40"></td>
+    </tr>
+    <tr>
+      <td>Centrex:</td>
+      <td><INPUT type="text" id="centrex" maxlength="40"></td>
+    </tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr>
+      <td><a href="admin.php" id="link">Cancelar</a></td>
+      <td align="left">
+        <INPUT type="submit" name="guardar" value="Guardar" onclick="xajax_guardar_contacto(
+          document.getElementById('nombre').value,
+          document.getElementById('email').value,
+          document.getElementById('telefono').value,
+          document.getElementById('centrex').value
+        );">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p id="texto" style="color:red;">{error}</p><br>
+<p id="texto">Los campos con (*) son obligatorios.</p>
+<br>
+<p id="texto">{comentario}{nom_contacto}</p>
+</div>

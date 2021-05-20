@@ -1,0 +1,74 @@
+<div>
+<h2 id="subtitulo">Buscar Norma</h2><br>
+<table id="transparente" cellspacing="4px" width="100%">
+  <tbody>
+    <tr>
+      <td>Tema:</td>
+      <td>
+          <SELECT name="select_tema" id="idtema" onchange="xajax_recargar_titulo(this.value);" style="width:80%;">
+            <!-- BEGIN cargar_tema -->
+            <OPTION value="{id_tema}">
+            {tema}
+            </OPTION>
+            <!-- END cargar_tema -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Titulo:</td>
+      <td id="celda_select_titulo">
+          <SELECT name="select_titulo" id="idnorma" style="width:80%;">
+            <!-- BEGIN cargar_titulo -->
+            <OPTION value="{id_norma}">{titulo_norma}</OPTION>
+            <!-- END cargar_titulo -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Nivel:</td>
+      <td>
+          <SELECT name="select_nivel" id="idnivel" style="width:80%;">
+            <!-- BEGIN cargar_nivel -->
+            <OPTION value="{id_nivel}">{nivel}</OPTION>
+            <!-- END cargar_nivel -->
+          </SELECT>
+      </td>
+    </tr>
+    <tr>
+      <td>Número:</td>
+      <td><INPUT type="text" id="numero" maxlength="11"></td>
+      <td>Palabra Clave:</td>
+      <td><INPUT type="text" id="keyword" maxlength="20"></td>
+    </tr>
+    <tr>
+      <td>Fecha Desde:</td>
+      <td>
+      <INPUT type="text" class="fegray" id="fe_desde" value="dd/mm/aaaa" maxlength="10"
+             onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}">
+      </td>
+      <td>Fecha Hasta:</td>
+      <td>
+      <INPUT type="text" class="fegray" id="fe_hasta" value="dd/mm/aaaa" maxlength="10"
+             onfocus="if(this.value=='dd/mm/aaaa'){this.value=''; this.style.color='black';}">
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a id="link" href="{via_link}">Volver</a></td>
+      <td>
+        <INPUT type="button" name="buscar" value="Buscar" onclick="xajax_resultado_normas(
+            document.getElementById('idtema').value,
+            document.getElementById('idnorma').value,
+            document.getElementById('idnivel').value,
+            document.getElementById('numero').value,
+            document.getElementById('fe_desde').value,
+            document.getElementById('fe_hasta').value,
+            document.getElementById('keyword').value);"/>
+      </td>
+    </tr>
+</tbody>
+</table>
+</div>

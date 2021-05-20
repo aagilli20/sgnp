@@ -1,0 +1,41 @@
+<div>
+<h2 id="subtitulo">Enviar Documento vía Correo Electrónico</h2><br>
+<INPUT type="hidden" id="id_dato" value="{iddato}">
+<INPUT type="hidden" id="id_tabla" value="{idtabla}">
+<table cellspacing="6px" id="transparente" width="80%">
+  <tbody>
+    <tr>
+      <td>Correo Electrónico:</td>
+      <td><INPUT type="text" id="email" maxlength="50">*</td>
+    </tr>
+    <tr>
+      <td>Asunto:</td>
+      <td><INPUT type="text" id="subject" maxlength="80" value="No Responder">*</td>
+    </tr>
+    <tr>
+      <td>Mensaje:</td>
+    </tr>
+  </tbody>
+</table>
+<TEXTAREA id="areatexto">
+Se adjunta el Documento Solicitado.
+Atte. Mesa de Orientación y Servicios.
+</TEXTAREA>
+<table cellspacing="6px" id="transparente" width="80%">
+  <tbody>
+    <td><a id="link" href="#" {via_ajax}>Volver</a></td>
+      <td align="left">
+        <INPUT type="button" name="enviar" value="Enviar" onclick="xajax_enviar_email(
+          document.getElementById('email').value,
+          document.getElementById('areatexto').value,
+          document.getElementById('id_dato').value,
+          document.getElementById('id_tabla').value
+        );">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p id="texto">Los campos con (*) son obligatorios.</p>
+<br>
+<p id="texto" style="color:red;">{comentario}</p>
+</div>

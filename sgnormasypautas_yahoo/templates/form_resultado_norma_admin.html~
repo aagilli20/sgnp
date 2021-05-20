@@ -1,0 +1,56 @@
+<div>
+<h2 id="subtitulo">Listado de Normas asociadas a la pauta Elegida</h2><br>
+<table width="98%" id="menu" style="margin-left:6px;">
+  <thead>
+    <tr>
+      <td width="12%" id="celdamenu">Número</th>
+      <td width="40%" id="celdamenu">Título</th>
+      <td width="14%" id="celdamenu">Nivel</th>
+      <td width="18%" id="celdamenu">Tema</td>
+      <td width="6%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_normas -->
+    <tr>
+      <td width="12%" id="celdaresul" align="center">{numero}</td>
+      <td width="40%" id="celdaresul">&nbsp;{titulo}</td>
+      <td width="14%" id="celdaresul">&nbsp;{nivel}</td>
+      <td width="18%" id="celdaresul" style="">{tema}</td>
+      <td width="6%" id="celdaresul" align="center">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Quitar" onclick="
+          if(confirm('Esta por eliminar la asociación entre una norma y una pauta, ¿seguro desea elininarla?')){xajax_desasociar_pauta_norma('{idpauta}','{idnorma}');}">
+      </td>
+    </tr>
+    <!-- END cargar_normas -->
+  </tbody>
+</table>
+<br><br>
+<h2 id="subtitulo">Asociar otra Norma:</h2><br>
+<table id="transparente" width="98%">
+  <tr>
+    <td width="40%">
+      <SELECT name="select_tema" id="idtema" onchange="xajax_recargar_titulo(this.value);" style="width:80%;">
+            <!-- BEGIN cargar_tema -->
+            <OPTION value="{id_tema}">
+            {tema}
+            </OPTION>
+            <!-- END cargar_tema -->
+      </SELECT>
+    </td>
+    <td id="celda_select_titulo" width="40%">
+      <SELECT name="select_titulo" id="idnorma" style="width:80%;">
+        <!-- BEGIN cargar_titulo -->
+        <OPTION value="{id_norma}">{titulo_norma}</OPTION>
+        <!-- END cargar_titulo -->
+      </SELECT>
+    </td>
+    <td width="18%">
+      <INPUT type="button" name="asociar" value="Asociar"
+        onclick="xajax_asociar_pauta_norma('{idpauta}',document.getElementById('idnorma').value);">
+    </td>
+  </tr>
+</table>
+<br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:4px;">Volver</a>
+</div>

@@ -1,0 +1,54 @@
+<div>
+<h2 id="subtitulo">Listado de Pautas asociadas a la Norma elegida</h2><br>
+<table width="98%" id="menu" style="margin-left:6px;">
+  <thead>
+    <tr>
+      <td width="16%" id="celdamenu">Fecha</td>
+      <td width="40%" id="celdamenu">Pauta</th>
+      <td width="30%" id="celdamenu">Tema</th>
+      <td width="6%" id="celdamenu"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_pautas -->
+    <tr>
+      <td width="16%" id="celdaresul" align="center">{fecha}</td>
+      <td width="40%" id="celdaresul">&nbsp;{nombre}</td>
+      <td width="30%" id="celdaresul">&nbsp;{tema}</td>
+      <td width="6%" id="celdaresul" align="center">
+        <img src="./imgs/trash32.png" id="itemsagenda" title="Quitar" onclick="
+          if(confirm('Esta por eliminar la asociación entre una norma y una pauta, ¿seguro desea elininarla?')){xajax_desasociar_norma_pauta('{idpauta}','{idnorma}');}">
+      </td>
+    </tr>
+    <!-- END cargar_pautas -->
+  </tbody>
+</table>
+<br><br>
+<h2 id="subtitulo">Asociar otra Pauta:</h2><br>
+<table id="transparente" width="98%">
+  <tr>
+    <td width="40%">
+      <SELECT name="select_tema" id="idtema" onchange="xajax_recargar_subtema(this.value);" style="width:80%;">
+        <!-- BEGIN cargar_tema -->
+        <OPTION value="{id_tema}">
+          {tema}
+        </OPTION>
+        <!-- END cargar_tema -->
+      </SELECT>
+    </td>
+    <td id="celda_select_subtema" width="40%">
+          <SELECT name="select_subtema" id="idpauta" style="width:80%;">
+            <!-- BEGIN cargar_subtema -->
+            <OPTION value="{id_pauta}">{nombre_pauta}</OPTION>
+            <!-- END cargar_subtema -->
+          </SELECT>
+    </td>
+    <td width="18%">
+      <INPUT type="button" name="asociar" value="Asociar"
+        onclick="xajax_asociar_norma_pauta({idnorma},document.getElementById('idpauta').value);">
+    </td>
+  </tr>
+</table>
+<br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:4px;">Volver</a>
+</div>

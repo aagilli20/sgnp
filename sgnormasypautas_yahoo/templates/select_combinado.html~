@@ -1,0 +1,5 @@
+<SELECT name="{nombre}" id="{id}" style="width:80%">
+  <!-- BEGIN cargar_combinado -->
+  <OPTION value="{valor}">{opcion}</OPTION>
+  <!-- END cargar_combinado -->
+</SELECT>

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>sgnp</title>
+  <link type="image/png" href="./imgs/world.png" rel="shortcut icon">
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <LINK href="./estilo.css" rel="StyleSheet" type="text/css">
+</head>
+<body>
+<div id="general">
+  <IMG id="top" src="./imgs/img_top.jpg">
+  <hr id="linea">
+  <h1 id="titulo">Sistema de Gestión de Normas y Pautas</h1>
+  <hr id="linea"><br>
+  <h2 id="subtitulo">Iniciar Sesión</h2>
+  <br><br>
+  <FORM action="validar_usuario.php" method="POST">
+    <table id="transparente" cellspacing="10px">
+    <tbody>
+      <tr>
+        <td>Usuario:</td>
+        <td><INPUT type="text" name="nick" maxlength="20"></td>
+      </tr>
+      <tr>
+        <td>Contraseña:</td>
+        <td><INPUT type="password" name="pass" maxlength="20"></td>
+      </tr>
+      <tr>
+        <td><a href="registrar_usuario.php" id="link">Registrarse</a></td>
+        <td align="right"><INPUT type="submit" name="ingresar" value="Ingresar"></td>
+      </tr>
+    </tbody>
+  </table>
+</FORM>
+  <p id="texto" style="color:red;">{error}</p><br>
+  <p id="texto">Recuerde que para ingresar debe estar Registrado y Habilitado como Usuario.</p>
+  <br>
+  <hr id="linea">
+  <IMG id="bottom" src="./imgs/img_bottom.jpg">
+</div>
+</body>
+</html>

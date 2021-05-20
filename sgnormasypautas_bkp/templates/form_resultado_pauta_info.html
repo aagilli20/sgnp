@@ -1,0 +1,25 @@
+<div>
+<h2 id="subtitulo">Seleccione una Pauta</h2><br>
+<table width="98%" id="menu" style="margin-left:6px;">
+  <thead>
+    <tr>
+      <td width="16%" id="celdamenu">Fecha</td>
+      <td width="42%" id="celdamenu">Pauta</th>
+      <td width="42%" id="celdamenu">Tema</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_pautas -->
+    <tr>
+      <td width="16%" id="celdaresul">{fecha}</td>
+      <td width="42%" id="celdaresul">
+        <a id="link" href="#" onclick="xajax_informe_pauta('{id}');">{nombre}</a>
+      </td>
+      <td width="42%" id="celdaresul">{tema}</td>
+    </tr>
+    <!-- END cargar_pautas -->
+  </tbody>
+</table>
+<br><br>
+<a id="link" href="{via_link}" {via_ajax} style="margin:4px;">Volver</a>
+</div>

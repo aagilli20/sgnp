@@ -1,0 +1,25 @@
+<div style="color:black;">
+<h2 id="subtitulo">Seleccione una Norma</h2><br>
+<table width="100%" cellspacing="2px" border="1px" class="celdamenu">
+  <thead>
+    <tr>
+      <th width="16%">Número</th>
+      <th width="60%">Título</th>
+      <th width="30%">Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN cargar_normas -->
+    <tr>
+      <td width="16%">
+        <a id="link" href="#" onclick="xjax_form_norma({id});">{numero}</a>
+      </td>
+      <td width="60%">{titulo}</td>
+      <td width="30%">{fecha}</td>
+    </tr>
+    <!-- END cargar_normas -->
+  </tbody>
+</table>
+<br><br>
+&nbsp;&nbsp;<a id="link" onclick="xajax_form_buscar_norma();">Volver</a>
+</div>

@@ -1,0 +1,8 @@
+<?php
+  session_start();
+  if(! $_SESSION['logueado']){
+    //no esta logueado
+    header("location:login.php");
+    die();
+  }
+?>

@@ -1,0 +1,39 @@
+<div>
+<h2 id="subtitulo">Mis Datos</h2><br>
+<table id="transparente" cellspacing="6px" width="94%">
+  <tbody>
+    <tr>
+      <td>Nombre:</td>
+      <td><INPUT type="text" id="nombre" value="{nombre}" maxlength="50">*</td>
+      <td>Apellido:</td>
+      <td><INPUT type="text" id="apellido" value="{apellido}" maxlength="30">*</td>
+    </tr>
+    <tr>
+      <td>Domicilio:</td>
+      <td><INPUT type="text" id="domicilio" value="{domicilio}" maxlength="60"></td>
+      <td>E-Mail:</td>
+      <td><INPUT type="text" id="email" value="{email}" maxlength="50">*</td>
+    </tr>
+    <tr>
+      <td>Teléfono:</td>
+      <td><INPUT type="text" id="telefono" value="{telefono}" maxlength="20"></td>
+      <td>Celular:</td>
+      <td><INPUT type="text" id="celular" value="{celular}" maxlength="20"></td>
+    </tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr><TD></TD><TD></TD></tr>
+    <tr>
+      <td><a href="index.php" id="link">Cancelar</a></td>
+      <td align="right">
+        <INPUT type="submit" name="modificar" value="Modificar" onclick="xajax_modificar_mis_datos(
+              document.getElementById('nombre').value,
+              document.getElementById('apellido').value,
+              document.getElementById('domicilio').value,
+              document.getElementById('email').value,
+              document.getElementById('telefono').value,
+              document.getElementById('celular').value);">
+      </td>
+    </tr>
+  </tbody>
+  </table>
+</div>

@@ -1,0 +1,8 @@
+<div>
+  <h2 id="subtitulo">Descripción:</h2><br>
+  <TEXTAREA readonly="true" id="areatexto">{descrip}</TEXTAREA>
+  <br>
+  <span style="margin:6px;">
+    <strong>Observaciones: </strong>{obs}
+  </span>
+</div>

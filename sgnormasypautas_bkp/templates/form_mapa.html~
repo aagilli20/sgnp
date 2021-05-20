@@ -1,0 +1,24 @@
+<div>
+  <h2 id="subtitulo">Índice de Registros por Temas</h2><br>
+  <table id="menu" width="96%">
+    <thead>
+    <tr>
+      <TD id="celdamenu" width="30%"><strong>Tema</strong></TD>
+      <TD id="celdamenu" width="20%"><strong>Tipo</strong></TD>
+      <TD id="celdamenu" width="30%"><strong>Dato</strong></TD>
+      <TD id="celdamenu" width="20%"><strong>Fecha</strong></TD>
+    </tr>
+    </thead>
+    <!-- BEGIN cargar_mapa -->
+    <tr>
+      <td id="celdaresul" width="30%">{tema}</td>
+      <td id="celdaresul" width="20%">{tipo}</td>
+      <td id="celdaresul" width="30%"><a id="link" href="#" {via_ajax}>{dato}</a></td>
+      <td id="celdaresul" width="20%">{fecha}</td>
+    </tr>
+    <!-- END cargar_mapa -->
+    </tbody>
+  </table>
+<br>
+<a id="link" href="index.php" style="margin-left:6px;">Volver</a>
+</div>
